@@ -25,6 +25,6 @@ export class Difficulty {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @OneToMany(() => Tour, tour => tour.difficultyRelation)
+  @OneToMany(() => Tour, (tour) => tour.difficultyRelation)
   tours: Tour[];
 }

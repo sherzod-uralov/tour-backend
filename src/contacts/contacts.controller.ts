@@ -32,8 +32,13 @@ export class ContactsController {
   @Post()
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Create a new contact inquiry (Authenticated users only)' })
-  @ApiResponse({ status: 201, description: 'Contact inquiry successfully created' })
+  @ApiOperation({
+    summary: 'Create a new contact inquiry (Authenticated users only)',
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'Contact inquiry successfully created',
+  })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   create(@Request() req, @Body() createContactDto: CreateContactDto) {
     return this.contactsService.create(req.user.id, createContactDto);
@@ -55,7 +60,10 @@ export class ContactsController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get all contact inquiries for the current user' })
-  @ApiResponse({ status: 200, description: 'Return all contact inquiries for the current user' })
+  @ApiResponse({
+    status: 200,
+    description: 'Return all contact inquiries for the current user',
+  })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   findMyInquiries(@Request() req) {
     return this.contactsService.findByUser(req.user.id);
@@ -77,25 +85,44 @@ export class ContactsController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Update contact inquiry by ID' })
-  @ApiResponse({ status: 200, description: 'Contact inquiry successfully updated' })
+  @ApiResponse({
+    status: 200,
+    description: 'Contact inquiry successfully updated',
+  })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
-  @ApiResponse({ status: 403, description: 'Forbidden - You do not have permission to update this contact inquiry' })
+  @ApiResponse({
+    status: 403,
+    description:
+      'Forbidden - You do not have permission to update this contact inquiry',
+  })
   @ApiResponse({ status: 404, description: 'Contact inquiry not found' })
   update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateContactDto: UpdateContactDto,
     @Request() req,
   ) {
-    return this.contactsService.update(id, req.user.id, req.user.role, updateContactDto);
+    return this.contactsService.update(
+      id,
+      req.user.id,
+      req.user.role,
+      updateContactDto,
+    );
   }
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Delete contact inquiry by ID' })
-  @ApiResponse({ status: 200, description: 'Contact inquiry successfully deleted' })
+  @ApiResponse({
+    status: 200,
+    description: 'Contact inquiry successfully deleted',
+  })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
-  @ApiResponse({ status: 403, description: 'Forbidden - You do not have permission to delete this contact inquiry' })
+  @ApiResponse({
+    status: 403,
+    description:
+      'Forbidden - You do not have permission to delete this contact inquiry',
+  })
   @ApiResponse({ status: 404, description: 'Contact inquiry not found' })
   remove(@Param('id', ParseIntPipe) id: number, @Request() req) {
     return this.contactsService.remove(id, req.user.id, req.user.role);

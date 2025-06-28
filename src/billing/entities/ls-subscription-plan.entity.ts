@@ -55,6 +55,9 @@ export class LsSubscriptionPlan {
   @Column({ nullable: true })
   sort: number;
 
-  @OneToMany(() => LsUserSubscription, subscription => subscription.subscriptionPlan)
+  @OneToMany(
+    () => LsUserSubscription,
+    (subscription) => subscription.subscriptionPlan,
+  )
   subscriptions: LsUserSubscription[];
 }

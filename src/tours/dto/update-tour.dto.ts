@@ -3,14 +3,11 @@ import {
   IsString,
   IsNumber,
   IsDateString,
-  IsEnum,
   IsArray,
   IsOptional,
   Min,
   IsBoolean,
 } from 'class-validator';
-import { TourCategory } from '../enums/tour-category.enum';
-import { TourDifficulty } from '../enums/tour-difficulty.enum';
 import { Type } from 'class-transformer';
 
 export class UpdateTourDto {
@@ -96,16 +93,6 @@ export class UpdateTourDto {
   availableSeats?: number;
 
   @ApiProperty({
-    example: 'historical',
-    description: 'The category of the tour',
-    enum: TourCategory,
-    required: false,
-  })
-  @IsEnum(TourCategory, { message: 'Invalid tour category' })
-  @IsOptional()
-  category?: TourCategory;
-
-  @ApiProperty({
     example: true,
     description: 'Whether the tour is active',
     required: false,
@@ -124,16 +111,6 @@ export class UpdateTourDto {
   @IsOptional()
   @Type(() => Number)
   duration?: number;
-
-  @ApiProperty({
-    example: 'moderate',
-    description: 'The difficulty level of the tour',
-    enum: TourDifficulty,
-    required: false,
-  })
-  @IsEnum(TourDifficulty, { message: 'Invalid tour difficulty' })
-  @IsOptional()
-  difficulty?: TourDifficulty;
 
   @ApiProperty({
     example: 'Hotel accommodation, Breakfast, Guided tours, Transportation',

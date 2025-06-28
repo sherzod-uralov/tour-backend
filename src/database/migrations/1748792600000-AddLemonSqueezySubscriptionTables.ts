@@ -1,6 +1,8 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class AddLemonSqueezySubscriptionTables1748792600000 implements MigrationInterface {
+export class AddLemonSqueezySubscriptionTables1748792600000
+  implements MigrationInterface
+{
   public async up(queryRunner: QueryRunner): Promise<void> {
     // Create ls_subscription_plans table
     await queryRunner.query(`

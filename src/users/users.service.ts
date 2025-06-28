@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ConflictException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
@@ -110,7 +114,10 @@ export class UsersService {
     };
   }
 
-  async addFavoriteTour(userId: number, favoriteTourDto: FavoriteTourDto): Promise<FavoriteTour> {
+  async addFavoriteTour(
+    userId: number,
+    favoriteTourDto: FavoriteTourDto,
+  ): Promise<FavoriteTour> {
     // Check if the user already has this tour as a favorite
     const existingFavorite = await this.favoriteTourRepository.findOne({
       where: {

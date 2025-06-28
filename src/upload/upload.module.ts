@@ -21,7 +21,10 @@ import { v4 as uuidv4 } from 'uuid';
       fileFilter: (req, file, callback) => {
         // Allow only images and PDFs
         if (!file.originalname.match(/\.(jpg|jpeg|png|gif|pdf)$/)) {
-          return callback(new Error('Only image files and PDFs are allowed!'), false);
+          return callback(
+            new Error('Only image files and PDFs are allowed!'),
+            false,
+          );
         }
         callback(null, true);
       },

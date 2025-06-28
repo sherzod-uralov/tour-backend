@@ -18,7 +18,8 @@ export class Contact {
   subject: string;
 
   @Column('text')
-  message: string;z
+  message: string;
+  z;
 
   @Column({ default: false })
   isResolved: boolean;

@@ -40,7 +40,7 @@ import { ContactsModule } from './contacts/contacts.module';
     // Application modules
     AuthModule,
     UsersModule,
-    ToursModule, 
+    ToursModule,
     BookingsModule,
     BillingModule,
     StatisticsModule,

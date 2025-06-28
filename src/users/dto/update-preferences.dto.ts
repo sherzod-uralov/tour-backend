@@ -1,4 +1,12 @@
-import { IsOptional, IsNumber, IsEnum, IsArray, Min, Max, IsString } from 'class-validator';
+import {
+  IsOptional,
+  IsNumber,
+  IsEnum,
+  IsArray,
+  Min,
+  Max,
+  IsString,
+} from 'class-validator';
 import { Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import { TourCategory } from '../../tours/enums/tour-category.enum';

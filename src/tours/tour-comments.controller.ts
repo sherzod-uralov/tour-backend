@@ -32,14 +32,20 @@ export class TourCommentsController {
   @ApiOperation({ summary: 'Create a new comment for a tour' })
   @ApiResponse({ status: 201, description: 'Comment created successfully' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
-  async create(@Request() req, @Body() createTourCommentDto: CreateTourCommentDto) {
+  async create(
+    @Request() req,
+    @Body() createTourCommentDto: CreateTourCommentDto,
+  ) {
     return this.tourCommentsService.create(req.user.id, createTourCommentDto);
   }
 
   @Get('tour/:tourId')
   @ApiOperation({ summary: 'Get all comments for a specific tour' })
   @ApiParam({ name: 'tourId', description: 'The ID of the tour' })
-  @ApiResponse({ status: 200, description: 'Returns all comments for the tour' })
+  @ApiResponse({
+    status: 200,
+    description: 'Returns all comments for the tour',
+  })
   async findAllForTour(@Param('tourId', ParseIntPipe) tourId: number) {
     return this.tourCommentsService.findAllForTour(tourId);
   }
@@ -67,7 +73,11 @@ export class TourCommentsController {
     @Request() req,
     @Body() updateTourCommentDto: Partial<CreateTourCommentDto>,
   ) {
-    return this.tourCommentsService.update(id, req.user.id, updateTourCommentDto);
+    return this.tourCommentsService.update(
+      id,
+      req.user.id,
+      updateTourCommentDto,
+    );
   }
 
   @Delete(':id')
@@ -88,7 +98,8 @@ export class TourCommentsController {
   @ApiParam({ name: 'tourId', description: 'The ID of the tour' })
   @ApiResponse({ status: 200, description: 'Returns the average rating' })
   async getAverageRating(@Param('tourId', ParseIntPipe) tourId: number) {
-    const averageRating = await this.tourCommentsService.getAverageRatingForTour(tourId);
+    const averageRating =
+      await this.tourCommentsService.getAverageRatingForTour(tourId);
     return { averageRating };
   }
 }

@@ -25,13 +25,17 @@ import {
   ApiBearerAuth,
   ApiQuery,
 } from '@nestjs/swagger';
-import { TourCategory } from './enums/tour-category.enum';
-import { TourDifficulty } from './enums/tour-difficulty.enum';
+import { CategoriesService } from './categories.service';
+import { DifficultiesService } from './difficulties.service';
 
 @ApiTags('Tours')
 @Controller('tours')
 export class ToursController {
-  constructor(private readonly toursService: ToursService) {}
+  constructor(
+    private readonly toursService: ToursService,
+    private readonly categoriesService: CategoriesService,
+    private readonly difficultiesService: DifficultiesService,
+  ) {}
 
   @Post()
   @UseGuards(JwtAuthGuard, RolesGuard)
@@ -44,7 +48,7 @@ export class ToursController {
   create(@Body() createTourDto: CreateTourDto) {
     return this.toursService.create(createTourDto);
   }
-//test
+  //test
   @Get()
   @ApiOperation({ summary: 'Get all active tours' })
   @ApiResponse({ status: 200, description: 'Return all active tours' })
@@ -66,11 +70,12 @@ export class ToursController {
     return this.toursService.findAllAdmin();
   }
 
-  @Get('category/:category')
-  @ApiOperation({ summary: 'Get tours by category enum value' })
-  @ApiResponse({ status: 200, description: 'Return tours by category enum value' })
-  findByCategoryEnum(@Param('category') category: TourCategory) {
-    return this.toursService.findByCategoryEnum(category);
+  @Get('category/:categoryUrl')
+  @ApiOperation({ summary: 'Get tours by category URL' })
+  @ApiResponse({ status: 200, description: 'Return tours by category URL' })
+  @ApiResponse({ status: 404, description: 'Category not found' })
+  async findByCategoryUrl(@Param('categoryUrl') categoryUrl: string) {
+    return this.toursService.findByCategoryUrl(categoryUrl);
   }
 
   @Get('category-id/:id')
@@ -163,14 +168,14 @@ export class ToursController {
   @Get('categories')
   @ApiOperation({ summary: 'Get all available tour categories' })
   @ApiResponse({ status: 200, description: 'Return all tour categories' })
-  getCategories() {
-    return Object.values(TourCategory);
+  async getCategories() {
+    return this.categoriesService.findAll();
   }
 
   @Get('difficulties')
   @ApiOperation({ summary: 'Get all available tour difficulties' })
   @ApiResponse({ status: 200, description: 'Return all tour difficulties' })
-  getDifficulties() {
-    return Object.values(TourDifficulty);
+  async getDifficulties() {
+    return this.difficultiesService.findAll();
   }
 }

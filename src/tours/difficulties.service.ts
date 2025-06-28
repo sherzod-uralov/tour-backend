@@ -22,19 +22,24 @@ export class DifficultiesService {
   }
 
   async findOne(id: number): Promise<Difficulty> {
-    const difficulty = await this.difficultiesRepository.findOne({ where: { id } });
+    const difficulty = await this.difficultiesRepository.findOne({
+      where: { id },
+    });
     if (!difficulty) {
       throw new NotFoundException(`Difficulty with ID ${id} not found`);
     }
     return difficulty;
   }
 
-  async update(id: number, updateDifficultyDto: UpdateDifficultyDto): Promise<Difficulty> {
+  async update(
+    id: number,
+    updateDifficultyDto: UpdateDifficultyDto,
+  ): Promise<Difficulty> {
     const difficulty = await this.findOne(id);
-    
+
     // Update difficulty properties
     Object.assign(difficulty, updateDifficultyDto);
-    
+
     return this.difficultiesRepository.save(difficulty);
   }
 

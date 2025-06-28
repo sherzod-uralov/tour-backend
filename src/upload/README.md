@@ -20,13 +20,16 @@ POST /api/upload/file
 ```
 
 **Headers:**
+
 - Authorization: Bearer {token}
 - Content-Type: multipart/form-data
 
 **Form Data:**
+
 - file: The file to upload
 
 **Response:**
+
 ```json
 {
   "originalname": "vacation-photo.jpg",
@@ -44,13 +47,16 @@ POST /api/upload/files
 ```
 
 **Headers:**
+
 - Authorization: Bearer {token}
 - Content-Type: multipart/form-data
 
 **Form Data:**
+
 - files: Array of files to upload (up to 10)
 
 **Response:**
+
 ```json
 {
   "files": [
@@ -80,23 +86,23 @@ You can use the returned URLs in other services, such as when creating or updati
 // In a tour service
 async updateTourImage(tourId: number, imageUrl: string): Promise<Tour> {
   const tour = await this.findOne(tourId);
-  
+
   // Add the new image URL to the tour's images array
   if (!tour.images) {
     tour.images = [];
   }
   tour.images.push(imageUrl);
-  
+
   return this.toursRepository.save(tour);
 }
 
 // In a user service
 async updateProfilePicture(userId: number, imageUrl: string): Promise<User> {
   const user = await this.findById(userId);
-  
+
   // Update the user's profile picture
   user.profilePicture = imageUrl;
-  
+
   return this.usersRepository.save(user);
 }
 ```

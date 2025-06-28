@@ -17,11 +17,32 @@ import { Booking } from '../bookings/entities/booking.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Tour, TourComment, Category, Difficulty, Booking]),
+    TypeOrmModule.forFeature([
+      Tour,
+      TourComment,
+      Category,
+      Difficulty,
+      Booking,
+    ]),
     forwardRef(() => BillingModule),
   ],
-  providers: [ToursService, TourCommentsService, CategoriesService, DifficultiesService],
-  controllers: [ToursController, TourCommentsController, CategoriesController, DifficultiesController],
-  exports: [ToursService, TourCommentsService, CategoriesService, DifficultiesService],
+  providers: [
+    ToursService,
+    TourCommentsService,
+    CategoriesService,
+    DifficultiesService,
+  ],
+  controllers: [
+    ToursController,
+    TourCommentsController,
+    CategoriesController,
+    DifficultiesController,
+  ],
+  exports: [
+    ToursService,
+    TourCommentsService,
+    CategoriesService,
+    DifficultiesService,
+  ],
 })
 export class ToursModule {}

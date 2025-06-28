@@ -47,6 +47,6 @@ export class UploadService {
       return [];
     }
 
-    return files.map(file => this.processUploadedFile(file));
+    return files.map((file) => this.processUploadedFile(file));
   }
 }

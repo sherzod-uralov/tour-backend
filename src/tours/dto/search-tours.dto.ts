@@ -1,8 +1,14 @@
-import { IsOptional, IsString, IsNumber, IsEnum, IsDate, Min, Max, IsArray } from 'class-validator';
+import {
+  IsOptional,
+  IsString,
+  IsNumber,
+  IsDate,
+  Min,
+  Max,
+  IsArray,
+} from 'class-validator';
 import { Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
-import { TourCategory } from '../enums/tour-category.enum';
-import { TourDifficulty } from '../enums/tour-difficulty.enum';
 
 export class SearchToursDto {
   @ApiProperty({
@@ -88,24 +94,24 @@ export class SearchToursDto {
   maxDuration?: number;
 
   @ApiProperty({
-    description: 'Tour category',
+    description: 'Tour category ID',
     required: false,
-    enum: TourCategory,
-    example: TourCategory.ADVENTURE,
+    example: 1,
   })
   @IsOptional()
-  @IsEnum(TourCategory)
-  category?: TourCategory;
+  @IsNumber()
+  @Type(() => Number)
+  category?: number;
 
   @ApiProperty({
-    description: 'Tour difficulty',
+    description: 'Tour difficulty ID',
     required: false,
-    enum: TourDifficulty,
-    example: TourDifficulty.MODERATE,
+    example: 1,
   })
   @IsOptional()
-  @IsEnum(TourDifficulty)
-  difficulty?: TourDifficulty;
+  @IsNumber()
+  @Type(() => Number)
+  difficulty?: number;
 
   @ApiProperty({
     description: 'Minimum number of available seats',

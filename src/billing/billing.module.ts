@@ -21,7 +21,7 @@ import { LsWebhookEvent } from './entities/ls-webhook-event.entity';
     forwardRef(() => ToursModule),
   ],
   providers: [PaymentService, LemonSqueezyService],
-  controllers: [ LemonSqueezyController],
+  controllers: [LemonSqueezyController],
   exports: [PaymentService, LemonSqueezyService],
 })
 export class BillingModule {}

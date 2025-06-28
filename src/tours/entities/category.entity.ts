@@ -28,6 +28,6 @@ export class Category {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @OneToMany(() => Tour, tour => tour.categoryRelation)
+  @OneToMany(() => Tour, (tour) => tour.categoryRelation)
   tours: Tour[];
 }

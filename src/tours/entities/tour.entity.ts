@@ -7,8 +7,6 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
-import { TourCategory } from '../enums/tour-category.enum';
-import { TourDifficulty } from '../enums/tour-difficulty.enum';
 import { Category } from './category.entity';
 import { Difficulty } from './difficulty.entity';
 
@@ -41,12 +39,6 @@ export class Tour {
   @Column()
   availableSeats: number;
 
-  @Column({
-    type: 'enum',
-    enum: TourCategory,
-    default: TourCategory.CULTURAL,
-  })
-  category: TourCategory;
 
   @Column({ default: true })
   isActive: boolean;
@@ -54,13 +46,6 @@ export class Tour {
   @Column({ nullable: true })
   duration: number;
 
-  @Column({
-    type: 'enum',
-    enum: TourDifficulty,
-    default: TourDifficulty.MODERATE,
-    nullable: true,
-  })
-  difficulty: TourDifficulty;
 
   @Column({ nullable: true, type: 'text' })
   includedServices: string;
@@ -90,14 +75,16 @@ export class Tour {
   lemonSqueezyVariantId: string;
 
   // Relationships
-  @ManyToOne(() => Category, category => category.tours, { nullable: true })
+  @ManyToOne(() => Category, (category) => category.tours, { nullable: true })
   @JoinColumn({ name: 'categoryId' })
   categoryRelation: Category;
 
   @Column({ nullable: true })
   categoryId: number;
 
-  @ManyToOne(() => Difficulty, difficulty => difficulty.tours, { nullable: true })
+  @ManyToOne(() => Difficulty, (difficulty) => difficulty.tours, {
+    nullable: true,
+  })
   @JoinColumn({ name: 'difficultyId' })
   difficultyRelation: Difficulty;
 

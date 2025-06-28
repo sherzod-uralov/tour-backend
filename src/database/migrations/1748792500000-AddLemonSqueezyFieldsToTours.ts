@@ -1,6 +1,8 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class AddLemonSqueezyFieldsToTours1748792500000 implements MigrationInterface {
+export class AddLemonSqueezyFieldsToTours1748792500000
+  implements MigrationInterface
+{
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`
       ALTER TABLE tours

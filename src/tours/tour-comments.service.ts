@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ForbiddenException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { TourComment } from './entities/tour-comment.entity';
@@ -13,7 +17,10 @@ export class TourCommentsService {
     private toursService: ToursService,
   ) {}
 
-  async create(userId: number, createTourCommentDto: CreateTourCommentDto): Promise<TourComment> {
+  async create(
+    userId: number,
+    createTourCommentDto: CreateTourCommentDto,
+  ): Promise<TourComment> {
     // Verify that the tour exists
     await this.toursService.findOne(createTourCommentDto.tourId);
 
@@ -33,14 +40,20 @@ export class TourCommentsService {
   }
 
   async findOne(id: number): Promise<TourComment> {
-    const comment = await this.tourCommentsRepository.findOne({ where: { id } });
+    const comment = await this.tourCommentsRepository.findOne({
+      where: { id },
+    });
     if (!comment) {
       throw new NotFoundException(`Comment with ID ${id} not found`);
     }
     return comment;
   }
 
-  async update(id: number, userId: number, updateData: Partial<CreateTourCommentDto>): Promise<TourComment> {
+  async update(
+    id: number,
+    userId: number,
+    updateData: Partial<CreateTourCommentDto>,
+  ): Promise<TourComment> {
     const comment = await this.findOne(id);
 
     // Check if the user is the owner of the comment

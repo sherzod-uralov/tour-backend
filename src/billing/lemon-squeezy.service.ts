@@ -52,7 +52,9 @@ export class LemonSqueezyService {
     const productId = tour.lemonSqueezyProductId;
 
     if (!variantId || !productId) {
-      throw new BadRequestException('Tour is missing Lemon Squeezy product or variant ID');
+      throw new BadRequestException(
+        'Tour is missing Lemon Squeezy product or variant ID',
+      );
     }
 
     console.log(
@@ -374,7 +376,7 @@ export class LemonSqueezyService {
       // These must be specified when creating a tour
       throw new BadRequestException(
         'Lemon Squeezy product and variant IDs must be provided when creating a tour. ' +
-        'Create a product manually in the Lemon Squeezy dashboard and provide the IDs.'
+          'Create a product manually in the Lemon Squeezy dashboard and provide the IDs.',
       );
     } catch (error) {
       console.error('Error getting Lemon Squeezy product IDs:', error.message);

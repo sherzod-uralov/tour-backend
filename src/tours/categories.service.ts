@@ -30,19 +30,24 @@ export class CategoriesService {
   }
 
   async findByUrl(categoryUrl: string): Promise<Category> {
-    const category = await this.categoriesRepository.findOne({ where: { categoryUrl } });
+    const category = await this.categoriesRepository.findOne({
+      where: { categoryUrl },
+    });
     if (!category) {
       throw new NotFoundException(`Category with URL ${categoryUrl} not found`);
     }
     return category;
   }
 
-  async update(id: number, updateCategoryDto: UpdateCategoryDto): Promise<Category> {
+  async update(
+    id: number,
+    updateCategoryDto: UpdateCategoryDto,
+  ): Promise<Category> {
     const category = await this.findOne(id);
-    
+
     // Update category properties
     Object.assign(category, updateCategoryDto);
-    
+
     return this.categoriesRepository.save(category);
   }
 

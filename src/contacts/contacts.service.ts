@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ForbiddenException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Contact } from './entities/contact.entity';
@@ -13,7 +17,10 @@ export class ContactsService {
     private contactsRepository: Repository<Contact>,
   ) {}
 
-  async create(userId: number, createContactDto: CreateContactDto): Promise<Contact> {
+  async create(
+    userId: number,
+    createContactDto: CreateContactDto,
+  ): Promise<Contact> {
     const contact = this.contactsRepository.create({
       ...createContactDto,
       userId,
@@ -33,11 +40,11 @@ export class ContactsService {
       where: { id },
       relations: ['user'],
     });
-    
+
     if (!contact) {
       throw new NotFoundException(`Contact inquiry with ID ${id} not found`);
     }
-    
+
     return contact;
   }
 
@@ -48,28 +55,37 @@ export class ContactsService {
     });
   }
 
-  async update(id: number, userId: number, userRole: string, updateContactDto: UpdateContactDto): Promise<Contact> {
+  async update(
+    id: number,
+    userId: number,
+    userRole: string,
+    updateContactDto: UpdateContactDto,
+  ): Promise<Contact> {
     const contact = await this.findOne(id);
-    
+
     // Only allow the user who created the contact or an admin to update it
     if (contact.userId !== userId && userRole !== Role.ADMIN) {
-      throw new ForbiddenException('You do not have permission to update this contact inquiry');
+      throw new ForbiddenException(
+        'You do not have permission to update this contact inquiry',
+      );
     }
-    
+
     // Update contact properties
     Object.assign(contact, updateContactDto);
-    
+
     return this.contactsRepository.save(contact);
   }
 
   async remove(id: number, userId: number, userRole: string): Promise<void> {
     const contact = await this.findOne(id);
-    
+
     // Only allow the user who created the contact or an admin to delete it
     if (contact.userId !== userId && userRole !== Role.ADMIN) {
-      throw new ForbiddenException('You do not have permission to delete this contact inquiry');
+      throw new ForbiddenException(
+        'You do not have permission to delete this contact inquiry',
+      );
     }
-    
+
     await this.contactsRepository.remove(contact);
   }
 }

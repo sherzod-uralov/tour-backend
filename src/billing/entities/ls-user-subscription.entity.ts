@@ -60,14 +60,14 @@ export class LsUserSubscription {
   @Column({ nullable: true })
   subscriptionItemId: string;
 
-  @ManyToOne(() => User, user => user.subscriptions)
+  @ManyToOne(() => User, (user) => user.subscriptions)
   @JoinColumn({ name: 'userId' })
   user: User;
 
   @Column()
   userId: number;
 
-  @ManyToOne(() => LsSubscriptionPlan, plan => plan.subscriptions)
+  @ManyToOne(() => LsSubscriptionPlan, (plan) => plan.subscriptions)
   @JoinColumn({ name: 'planId' })
   subscriptionPlan: LsSubscriptionPlan;
 

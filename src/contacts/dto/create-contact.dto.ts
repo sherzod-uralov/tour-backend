@@ -11,7 +11,8 @@ export class CreateContactDto {
   subject: string;
 
   @ApiProperty({
-    example: 'I would like to know if there are still available seats for the Samarkand tour in July.',
+    example:
+      'I would like to know if there are still available seats for the Samarkand tour in July.',
     description: 'The message content of the contact inquiry',
   })
   @IsString()
