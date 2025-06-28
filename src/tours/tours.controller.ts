@@ -26,6 +26,7 @@ import {
   ApiQuery,
 } from '@nestjs/swagger';
 import { TourCategory } from './enums/tour-category.enum';
+import { TourDifficulty } from './enums/tour-difficulty.enum';
 
 @ApiTags('Tours')
 @Controller('tours')
@@ -43,7 +44,7 @@ export class ToursController {
   create(@Body() createTourDto: CreateTourDto) {
     return this.toursService.create(createTourDto);
   }
-
+//test
   @Get()
   @ApiOperation({ summary: 'Get all active tours' })
   @ApiResponse({ status: 200, description: 'Return all active tours' })
@@ -66,10 +67,18 @@ export class ToursController {
   }
 
   @Get('category/:category')
-  @ApiOperation({ summary: 'Get tours by category' })
-  @ApiResponse({ status: 200, description: 'Return tours by category' })
-  findByCategory(@Param('category') category: TourCategory) {
-    return this.toursService.findByCategory(category);
+  @ApiOperation({ summary: 'Get tours by category enum value' })
+  @ApiResponse({ status: 200, description: 'Return tours by category enum value' })
+  findByCategoryEnum(@Param('category') category: TourCategory) {
+    return this.toursService.findByCategoryEnum(category);
+  }
+
+  @Get('category-id/:id')
+  @ApiOperation({ summary: 'Get tours by category ID' })
+  @ApiResponse({ status: 200, description: 'Return tours by category ID' })
+  @ApiResponse({ status: 404, description: 'Category not found' })
+  findByCategory(@Param('id', ParseIntPipe) id: number) {
+    return this.toursService.findByCategory(id);
   }
 
   @Get('available')
@@ -151,24 +160,17 @@ export class ToursController {
     return this.toursService.searchTours(searchDto);
   }
 
-  @Get('featured')
-  @ApiOperation({ summary: 'Get featured tours' })
-  @ApiResponse({ status: 200, description: 'Return featured tours' })
-  getFeaturedTours() {
-    return this.toursService.getFeaturedTours();
+  @Get('categories')
+  @ApiOperation({ summary: 'Get all available tour categories' })
+  @ApiResponse({ status: 200, description: 'Return all tour categories' })
+  getCategories() {
+    return Object.values(TourCategory);
   }
 
-  @Get('popular')
-  @ApiOperation({ summary: 'Get popular tours' })
-  @ApiResponse({ status: 200, description: 'Return popular tours' })
-  getPopularTours() {
-    return this.toursService.getPopularTours();
-  }
-
-  @Get('upcoming')
-  @ApiOperation({ summary: 'Get upcoming tours' })
-  @ApiResponse({ status: 200, description: 'Return upcoming tours' })
-  getUpcomingTours() {
-    return this.toursService.getUpcomingTours();
+  @Get('difficulties')
+  @ApiOperation({ summary: 'Get all available tour difficulties' })
+  @ApiResponse({ status: 200, description: 'Return all tour difficulties' })
+  getDifficulties() {
+    return Object.values(TourDifficulty);
   }
 }

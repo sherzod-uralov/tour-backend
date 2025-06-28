@@ -179,4 +179,42 @@ export class UpdateTourDto {
   @IsString()
   @IsOptional()
   endPoint?: string;
+
+  @ApiProperty({
+    example: '536690',
+    description: 'The Lemon Squeezy product ID',
+    required: false,
+  })
+  @IsString()
+  @IsOptional()
+  lemonSqueezyProductId?: string;
+
+  @ApiProperty({
+    example: '536690',
+    description: 'The Lemon Squeezy variant ID',
+    required: false,
+  })
+  @IsString()
+  @IsOptional()
+  lemonSqueezyVariantId?: string;
+
+  @ApiProperty({
+    example: 1,
+    description: 'The ID of the category entity',
+    required: false,
+  })
+  @IsNumber()
+  @IsOptional()
+  @Type(() => Number)
+  categoryId?: number;
+
+  @ApiProperty({
+    example: 1,
+    description: 'The ID of the difficulty entity',
+    required: false,
+  })
+  @IsNumber()
+  @IsOptional()
+  @Type(() => Number)
+  difficultyId?: number;
 }

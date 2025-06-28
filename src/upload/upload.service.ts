@@ -13,11 +13,7 @@ export class UploadService {
    * @returns The base URL for accessing uploaded files
    */
   private getFileBaseUrl(): string {
-    // In a production environment, this might be a CDN URL
-    // For local development, we use the application URL
-    const host = this.configService.get('HOST', 'localhost');
-    const port = this.configService.get('PORT', '3005');
-    return `http://${host}:${port}/uploads`;
+    return `https://4bf0-213-230-114-101.ngrok-free.app/uploads`;
   }
 
   /**

@@ -4,16 +4,23 @@ import {
   BadRequestException,
   Inject,
   forwardRef,
+  ConflictException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Between, Repository, Like, MoreThanOrEqual, LessThanOrEqual, FindOptionsWhere } from 'typeorm';
 import { Tour } from './entities/tour.entity';
 import { TourComment } from './entities/tour-comment.entity';
+import { Category } from './entities/category.entity';
+import { Difficulty } from './entities/difficulty.entity';
 import { CreateTourDto } from './dto/create-tour.dto';
 import { UpdateTourDto } from './dto/update-tour.dto';
 import { SearchToursDto } from './dto/search-tours.dto';
 import { TourCategory } from './enums/tour-category.enum';
+import { TourDifficulty } from './enums/tour-difficulty.enum';
 import { LemonSqueezyService } from '../billing/lemon-squeezy.service';
+import { CategoriesService } from './categories.service';
+import { DifficultiesService } from './difficulties.service';
+import { Booking } from '../bookings/entities/booking.entity';
 
 @Injectable()
 export class ToursService {
@@ -22,8 +29,12 @@ export class ToursService {
     private toursRepository: Repository<Tour>,
     @InjectRepository(TourComment)
     private tourCommentsRepository: Repository<TourComment>,
+    @InjectRepository(Booking)
+    private bookingsRepository: Repository<Booking>,
     @Inject(forwardRef(() => LemonSqueezyService))
     private lemonSqueezyService: LemonSqueezyService,
+    private categoriesService: CategoriesService,
+    private difficultiesService: DifficultiesService,
   ) {}
 
   async create(createTourDto: CreateTourDto): Promise<Tour> {
@@ -35,6 +46,20 @@ export class ToursService {
     }
 
     const tour = this.toursRepository.create(createTourDto);
+
+    // Handle category if provided
+    if (createTourDto.categoryId) {
+      const category = await this.categoriesService.findOne(createTourDto.categoryId);
+      tour.categoryRelation = category;
+      tour.categoryId = category.id;
+    }
+
+    // Handle difficulty if provided
+    if (createTourDto.difficultyId) {
+      const difficulty = await this.difficultiesService.findOne(createTourDto.difficultyId);
+      tour.difficultyRelation = difficulty;
+      tour.difficultyId = difficulty.id;
+    }
 
     // Save the tour with the provided Lemon Squeezy IDs
     const savedTour = await this.toursRepository.save(tour);
@@ -116,15 +141,60 @@ export class ToursService {
     // Update tour properties
     Object.assign(tour, updateTourDto);
 
+    // Handle category if provided
+    if (updateTourDto.categoryId) {
+      const category = await this.categoriesService.findOne(updateTourDto.categoryId);
+      tour.categoryRelation = category;
+      tour.categoryId = category.id;
+    }
+
+    // Handle difficulty if provided
+    if (updateTourDto.difficultyId) {
+      const difficulty = await this.difficultiesService.findOne(updateTourDto.difficultyId);
+      tour.difficultyRelation = difficulty;
+      tour.difficultyId = difficulty.id;
+    }
+
     return this.toursRepository.save(tour);
   }
 
   async remove(id: number): Promise<void> {
     const tour = await this.findOne(id);
+
+    // Check if there are any bookings associated with this tour
+    const bookingsCount = await this.bookingsRepository.count({ where: { tourId: id } });
+    if (bookingsCount > 0) {
+      throw new ConflictException(
+        `Cannot delete tour with ID ${id} because it has ${bookingsCount} associated bookings. Please delete the bookings first.`
+      );
+    }
+
+    // Check if there are any comments associated with this tour
+    const commentsCount = await this.tourCommentsRepository.count({ where: { tourId: id } });
+    if (commentsCount > 0) {
+      throw new ConflictException(
+        `Cannot delete tour with ID ${id} because it has ${commentsCount} associated comments. Please delete the comments first.`
+      );
+    }
+
     await this.toursRepository.remove(tour);
   }
 
-  async findByCategory(category: TourCategory): Promise<(Tour & { averageRating?: number })[]> {
+  async findByCategory(categoryId: number): Promise<(Tour & { averageRating?: number })[]> {
+    const category = await this.categoriesService.findOne(categoryId);
+
+    const tours = await this.toursRepository.find({
+      where: {
+        categoryId: category.id,
+        isActive: true,
+      },
+      relations: ['categoryRelation'],
+    });
+
+    return this.addAverageRatingsToTours(tours);
+  }
+
+  async findByCategoryEnum(category: TourCategory): Promise<(Tour & { averageRating?: number })[]> {
     const tours = await this.toursRepository.find({
       where: {
         category,
@@ -232,12 +302,24 @@ export class ToursService {
 
     // Filter by category
     if (category) {
-      where.category = category;
+      if (typeof category === 'number') {
+        // If category is a number, it's a categoryId
+        where.categoryId = category;
+      } else {
+        // Otherwise, it's a TourCategory enum value
+        where.category = category;
+      }
     }
 
     // Filter by difficulty
     if (difficulty) {
-      where.difficulty = difficulty;
+      if (typeof difficulty === 'number') {
+        // If difficulty is a number, it's a difficultyId
+        where.difficultyId = difficulty;
+      } else {
+        // Otherwise, it's a TourDifficulty enum value
+        where.difficulty = difficulty;
+      }
     }
 
     // Filter by available seats

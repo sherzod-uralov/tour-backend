@@ -186,4 +186,24 @@ export class CreateTourDto {
   @IsString()
   @IsOptional()
   lemonSqueezyVariantId?: string;
+
+  @ApiProperty({
+    example: 1,
+    description: 'The ID of the category entity',
+    required: false,
+  })
+  @IsNumber()
+  @IsOptional()
+  @Type(() => Number)
+  categoryId?: number;
+
+  @ApiProperty({
+    example: 1,
+    description: 'The ID of the difficulty entity',
+    required: false,
+  })
+  @IsNumber()
+  @IsOptional()
+  @Type(() => Number)
+  difficultyId?: number;
 }

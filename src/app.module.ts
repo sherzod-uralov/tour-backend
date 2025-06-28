@@ -12,6 +12,7 @@ import { BillingModule } from './billing/billing.module';
 import { SeedModule } from './common/seed/seed.module';
 import { StatisticsModule } from './statistics/statistics.module';
 import { UploadModule } from './upload/upload.module';
+import { ContactsModule } from './contacts/contacts.module';
 
 @Module({
   imports: [
@@ -45,6 +46,7 @@ import { UploadModule } from './upload/upload.module';
     StatisticsModule,
     SeedModule, // Add seed module to populate initial data
     UploadModule, // Add upload module for file uploads
+    ContactsModule, // Add contacts module for contact inquiries
   ],
   controllers: [AppController],
   providers: [AppService],

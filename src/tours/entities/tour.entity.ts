@@ -4,9 +4,13 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
 import { TourCategory } from '../enums/tour-category.enum';
 import { TourDifficulty } from '../enums/tour-difficulty.enum';
+import { Category } from './category.entity';
+import { Difficulty } from './difficulty.entity';
 
 @Entity('tours')
 export class Tour {
@@ -85,8 +89,22 @@ export class Tour {
   @Column({ nullable: true })
   lemonSqueezyVariantId: string;
 
-  // Relationships will be added here as we develop other entities
-  // For example:
+  // Relationships
+  @ManyToOne(() => Category, category => category.tours, { nullable: true })
+  @JoinColumn({ name: 'categoryId' })
+  categoryRelation: Category;
+
+  @Column({ nullable: true })
+  categoryId: number;
+
+  @ManyToOne(() => Difficulty, difficulty => difficulty.tours, { nullable: true })
+  @JoinColumn({ name: 'difficultyId' })
+  difficultyRelation: Difficulty;
+
+  @Column({ nullable: true })
+  difficultyId: number;
+
+  // Other relationships
   // @OneToMany(() => Booking, booking => booking.tour)
   // bookings: Booking[];
 }
