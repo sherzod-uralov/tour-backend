@@ -4,14 +4,11 @@ import {
   IsString,
   IsNumber,
   IsDateString,
-  IsEnum,
   IsArray,
   IsOptional,
   Min,
   IsBoolean,
 } from 'class-validator';
-import { TourCategory } from '../enums/tour-category.enum';
-import { TourDifficulty } from '../enums/tour-difficulty.enum';
 import { Type } from 'class-transformer';
 
 export class CreateTourDto {
@@ -24,8 +21,7 @@ export class CreateTourDto {
   title: string;
 
   @ApiProperty({
-    example:
-      'Explore the ancient city of Samarkand with its rich history and architecture.',
+    example: 'Explore the ancient city of Samarkand...',
     description: 'The description of the tour',
   })
   @IsString()
@@ -33,10 +29,7 @@ export class CreateTourDto {
   description: string;
 
   @ApiProperty({
-    example: [
-      'https://example.com/image1.jpg',
-      'https://example.com/image2.jpg',
-    ],
+    example: ['https://example.com/image1.jpg'],
     description: 'Array of image URLs for the tour',
   })
   @IsArray()
@@ -63,7 +56,7 @@ export class CreateTourDto {
 
   @ApiProperty({
     example: '2023-07-15',
-    description: 'The start date of the tour (YYYY-MM-DD)',
+    description: 'Start date of the tour (YYYY-MM-DD)',
   })
   @IsDateString()
   @IsNotEmpty({ message: 'Start date is required' })
@@ -71,7 +64,7 @@ export class CreateTourDto {
 
   @ApiProperty({
     example: '2023-07-22',
-    description: 'The end date of the tour (YYYY-MM-DD)',
+    description: 'End date of the tour (YYYY-MM-DD)',
   })
   @IsDateString()
   @IsNotEmpty({ message: 'End date is required' })
@@ -79,20 +72,12 @@ export class CreateTourDto {
 
   @ApiProperty({
     example: 20,
-    description: 'The number of available seats for the tour',
+    description: 'Available seats for the tour',
   })
   @IsNumber()
   @Min(1, { message: 'Available seats must be at least 1' })
   @Type(() => Number)
   availableSeats: number;
-
-  @ApiProperty({
-    example: 'historical',
-    description: 'The category of the tour',
-    enum: TourCategory,
-  })
-  @IsEnum(TourCategory, { message: 'Invalid tour category' })
-  category: TourCategory;
 
   @ApiProperty({
     example: true,
@@ -105,27 +90,17 @@ export class CreateTourDto {
 
   @ApiProperty({
     example: 7,
-    description: 'The duration of the tour in days',
+    description: 'Duration in days',
     required: false,
   })
   @IsNumber()
-  @Min(1, { message: 'Duration must be at least 1 day' })
+  @Min(1)
   @IsOptional()
   @Type(() => Number)
   duration?: number;
 
   @ApiProperty({
-    example: 'moderate',
-    description: 'The difficulty level of the tour',
-    enum: TourDifficulty,
-    required: false,
-  })
-  @IsEnum(TourDifficulty, { message: 'Invalid tour difficulty' })
-  @IsOptional()
-  difficulty?: TourDifficulty;
-
-  @ApiProperty({
-    example: 'Hotel accommodation, Breakfast, Guided tours, Transportation',
+    example: 'Hotel accommodation, Breakfast, Guided tours...',
     description: 'Services included in the tour',
     required: false,
   })
@@ -134,7 +109,7 @@ export class CreateTourDto {
   includedServices?: string;
 
   @ApiProperty({
-    example: 'Flights, Lunch and Dinner, Personal expenses',
+    example: 'Flights, Personal expenses',
     description: 'Services excluded from the tour',
     required: false,
   })
@@ -143,8 +118,8 @@ export class CreateTourDto {
   excludedServices?: string;
 
   @ApiProperty({
-    example: 'Day 1: Arrival and city tour. Day 2: Visit to Registan Square...',
-    description: 'Detailed itinerary of the tour',
+    example: 'Day 1: Arrival and city tour...',
+    description: 'Detailed itinerary',
     required: false,
   })
   @IsString()
@@ -153,7 +128,7 @@ export class CreateTourDto {
 
   @ApiProperty({
     example: 'Tashkent International Airport',
-    description: 'The meeting point for the tour',
+    description: 'Meeting point',
     required: false,
   })
   @IsString()
@@ -162,7 +137,7 @@ export class CreateTourDto {
 
   @ApiProperty({
     example: 'Tashkent International Airport',
-    description: 'The end point of the tour',
+    description: 'End point of the tour',
     required: false,
   })
   @IsString()
@@ -171,7 +146,7 @@ export class CreateTourDto {
 
   @ApiProperty({
     example: '536690',
-    description: 'The Lemon Squeezy product ID',
+    description: 'Lemon Squeezy product ID',
     required: false,
   })
   @IsString()
@@ -180,7 +155,7 @@ export class CreateTourDto {
 
   @ApiProperty({
     example: '536690',
-    description: 'The Lemon Squeezy variant ID',
+    description: 'Lemon Squeezy variant ID',
     required: false,
   })
   @IsString()
@@ -189,21 +164,19 @@ export class CreateTourDto {
 
   @ApiProperty({
     example: 1,
-    description: 'The ID of the category entity',
-    required: false,
+    description: 'ID of the category entity',
+    required: true,
   })
   @IsNumber()
-  @IsOptional()
   @Type(() => Number)
-  categoryId?: number;
+  categoryId: number;
 
   @ApiProperty({
-    example: 1,
-    description: 'The ID of the difficulty entity',
-    required: false,
+    example: 2,
+    description: 'ID of the difficulty entity',
+    required: true,
   })
   @IsNumber()
-  @IsOptional()
   @Type(() => Number)
-  difficultyId?: number;
+  difficultyId: number;
 }
