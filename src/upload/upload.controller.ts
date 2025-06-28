@@ -78,7 +78,7 @@ export class UploadController {
     description: 'Files uploaded successfully',
     type: FilesUploadDto,
   })
-  @UseInterceptors(FilesInterceptor('files', 10)) // Allow up to 10 files
+  @UseInterceptors(FilesInterceptor('files', 10))
   uploadFiles(@UploadedFiles() files: Express.Multer.File[]) {
     if (!files || files.length === 0) {
       throw new BadRequestException('No files uploaded');

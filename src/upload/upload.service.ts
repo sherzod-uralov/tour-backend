@@ -13,7 +13,7 @@ export class UploadService {
    * @returns The base URL for accessing uploaded files
    */
   private getFileBaseUrl(): string {
-    return `https://4bf0-213-230-114-101.ngrok-free.app/uploads`;
+    return `https://portfolioo.uz/uploads`;
   }
 
   /**
